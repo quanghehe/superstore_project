@@ -1,3 +1,5 @@
 note
 .env
 __pycache__
+.user.yml
+dbt.log

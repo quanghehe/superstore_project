@@ -19,6 +19,9 @@ services:
     container_name: airflow
     env_file:
       - .env
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
     volumes:
       - ./airflow/dags:/opt/airflow/dags
       - ./data:/opt/airflow/data
@@ -35,6 +38,16 @@ services:
       "
     networks:
       - my-networks
+  dbt:
+    image: ghcr.io/dbt-labs/dbt-postgres:1.7.0
+    volumes:
+      - ./dbt:/usr/app
+    working_dir: /usr/app
+    depends_on:
+      - postgres
+    networks:
+      - my-networks
+    entrypoint: ["tail", "-f", "/dev/null"]
 
 networks:
   my-networks:
