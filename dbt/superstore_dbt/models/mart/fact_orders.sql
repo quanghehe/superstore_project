@@ -9,6 +9,7 @@ select
     o.ship_mode,
     o.order_date,
     o.ship_date,
+    o.sales,
     o.quantity,
     o.discount,
     o.profit
