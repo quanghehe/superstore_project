@@ -6,7 +6,7 @@ Build-data-pipeline-with-Airflow-Python-dbt-PostgreSQL
 
 Dashboard with Power BI
 
-![alt text](image.png)
+![alt text](image-3.png)
 
 ![alt text](image-2.png)
 
