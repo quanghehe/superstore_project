@@ -1,8 +1,8 @@
 version: 2
 
 sources:
-  - name: raw      # Tên source (do bạn đặt, thường là "raw" hay "stg")
-    database: superstore  # Nếu không dùng, dbt sẽ tự dùng từ profile
+  - name: raw      
+    database: superstore  
     schema: public
     tables:
       - name: raw_orders
