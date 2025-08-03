@@ -25,6 +25,9 @@ services:
     volumes:
       - ./airflow/dags:/opt/airflow/dags
       - ./data:/opt/airflow/data
+      - ./airflow/dbt/superstore_dbt:/usr/app/superstore_dbt
+      - ./airflow/dbt:/opt/airflow/dbt 
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - "8080:8080"
     depends_on:

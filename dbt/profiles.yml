@@ -6,7 +6,7 @@ superstore_dbt:
       host: "postgres"
       port: 5432
       user: "quang"
-      pass: "q"
+      password: "q"
       dbname: "superstore"
       schema: "public"
   target: "dev"
