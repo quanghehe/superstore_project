@@ -1,0 +1,62 @@
+
+services:
+  postgres:
+    image: postgres:14
+    container_name: postgres_container
+    env_file:
+      - .env
+    ports:
+      - "5432:5432"
+    networks:
+      - my-networks
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  airflow:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: airflow_container
+    env_file:
+      - .env
+    environment:
+      - AIRFLOW__CORE__EXECUTOR=SequentialExecutor
+      - AIRFLOW__DATABASE__SQL_ALCHEMY_CONN=postgresql+psycopg2://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}
+    volumes:
+      - ./airflow/dags:/opt/airflow/dags
+      - ./data:/opt/airflow/data
+      - ./airflow/dbt/superstore_dbt:/usr/app/superstore_dbt
+      - ./airflow/dbt:/opt/airflow/dbt 
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    command: >
+      bash -c "
+        airflow db init &&
+        airflow db migrate &&
+        airflow users create --username admin --password admin --firstname admin --lastname admin --role Admin --email admin@example.com &&
+        airflow scheduler & airflow webserver
+      "
+    networks:
+      - my-networks
+  dbt:
+    container_name: dbt_container
+    image: ghcr.io/dbt-labs/dbt-postgres:1.7.0
+    volumes:
+      - ./dbt:/usr/app
+      - ./dbt/profiles.yml:/root/.dbt/profiles.yml
+    working_dir: /usr/app
+    depends_on:
+      - postgres
+    networks:
+      - my-networks
+    entrypoint: ["tail", "-f", "/dev/null"]
+
+networks:
+  my-networks:
+    driver: bridge
+
+volumes:
+  postgres_data:

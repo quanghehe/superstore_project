@@ -1,0 +1,12 @@
+superstore_dbt:
+  outputs:
+    dev:
+      type: postgres
+      threads: 1
+      host: "postgres"
+      port: 5432
+      user: "quang"
+      password: "q"
+      dbname: "superstore"
+      schema: "public"
+  target: "dev"

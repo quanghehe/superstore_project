@@ -1,0 +1,15 @@
+version: 2
+
+sources:
+  - name: raw      
+    database: superstore  
+    schema: public
+    tables:
+      - name: raw_orders
+        description: "Bảng đơn hàng gốc từ hệ thống"
+        columns:
+          - name: order_id
+            description: "Mã đơn hàng"
+            tests:
+              - not_null
+              - unique
